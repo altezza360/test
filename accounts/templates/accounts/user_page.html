@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}User page{% endblock %}
+
+{% block content %}
+
+
+<h1>Добро пожаловать, {{request.user}}.</h1>
+
+<hr class="mt-0 mb-4">
+<h2>Statistics</h2>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+        <th scope="col">Total orders</th>
+        <th scope="col">Pending</th>
+        <th scope="col">In process</th>
+        <th scope="col">Delivered</th>
+        <th scope="col">Pending sum</th>
+        <th scope="col">In process sum</th>
+        <th scope="col">Delivered sum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td>{{ total_orders }}</td>
+        <td>{{ pending }}</td>
+        <td>{{ in_process }}</td>
+        <td>{{ delivered }}</td>
+        <td>{{ pending_p }} тг</td>
+        <td>{{ in_process_p }} тг</td>
+        <td>{{ delivered_p }} тг</td>
+    </tr>
+  </tbody>
+</table>
+<hr class="mt-0 mb-4">
+
+<h2>Orders</h2>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Order number</th>
+        <th scope="col">Description</th>
+        <th scope="col">Price</th>
+        <th scope="col">Status</th>
+        <th scope="col">Created Date</th>
+    </tr>
+  </thead>
+    <tbody>
+    {% for order in orders %}
+    <tr>
+        <th scope="row">{{ order.id }}</th>
+        <td>{{ order.description}}</td>
+        <td>{{ order.price}}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.date_created }}</td>
+    </tr>
+    {% endfor %}
+{% endblock %}

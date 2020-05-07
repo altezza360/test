@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Manager's page{% endblock %}
+
+{% block content %}
+<hr class="mt-0 mb-4">
+<h2>Statistics</h2>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+        <th scope="col">Total orders</th>
+        <th scope="col">Pending</th>
+        <th scope="col">In process</th>
+        <th scope="col">Delivered</th>
+        <th scope="col">Pending sum</th>
+        <th scope="col">In process sum</th>
+        <th scope="col">Delivered sum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td>{{ total_orders }}</td>
+        <td>{{ pending }}</td>
+        <td>{{ in_process }}</td>
+        <td>{{ delivered }}</td>
+        <td>{{ pending_p }} тг</td>
+        <td>{{ in_process_p }} тг</td>
+        <td>{{ delivered_p }} тг</td>
+    </tr>
+  </tbody>
+</table>
+<hr class="mt-0 mb-4">
+
+<h2>Specialists</h2>
+<a href="{% url 'create_specialist_url' %}"><button type="button" class="btn btn-primary">Create specialist</button></a>
+<table class="table table-hover">
+  <thead>
+    <tr class="table-active">
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Speciality</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for specialist in specialists %}
+        <tr>
+          <th scope="row">{{specialist.id}}</th>
+          <td><a href="/specialists/{{specialist.id}}">{{specialist.name}}</a></td>
+          <td>{{specialist.phone}}</td>
+          <td>{{specialist.email}}</td>
+          <td>{{specialist.speciality}}</td>
+        </tr>
+        {% endfor %}
+  </tbody>
+</table>
+
+<h2>Orders</h2>
+<a href="{% url 'create_order_url' %}"><button type="button" class="btn btn-primary">Create order</button></a>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+        <th scope="col">Description</th>
+        <th scope="col">Price</th>
+        <th scope="col">Specialist</th>
+        <th scope="col">Status</th>
+        <th scope="col">Created Date</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+    </tr>
+  </thead>
+    <tbody>
+    {% for order in orders %}
+    <tr>
+        <th scope="row">{{ order.id }}</th>
+        <td>{{ order.description}}</td>
+        <td>{{ order.price}}</td>
+        <td>{{ order.specialist }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.date_created }}</td>
+        <td><a href="/edit_order/{{order.id}}"><button type="button" class="btn btn-success">Edit</button></a></td>
+        <td><a href="/delete_order/{{order.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

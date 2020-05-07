@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete order{% endblock %}
+
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+    Are you sure that you want to delete this order?
+    <p><button type="submit" class="btn btn-danger">Yes, I'm sure</button></p>
+    <a href="/manager_page"><button type="button" class="btn btn-secondary">No, take me back</button></a>
+</form>
+{% endblock %}
