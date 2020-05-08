@@ -5,11 +5,12 @@ from django.db.models import Sum
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .decorators import check, allowed_users
+from .decorators import check, allowed_users, is_specialist
 from django.core.exceptions import ObjectDoesNotExist
 
 @login_required(login_url='/login/')
-@check
+@is_specialist
+# @check
 def base(request):
     orders = Order.objects.all()
     total_order = Order.objects.count()
@@ -19,10 +20,11 @@ def base(request):
     context = {'orders': orders, 'products': products,
                'specialists': specialists, 'total_order': total_order,
                'pending_orders': pending_orders}
-    return render(request, 'accounts/test.html', context)
+    return render(request, 'accounts/main.html', context)
 
 @login_required(login_url='/login/')
-@check
+@is_specialist
+# @check
 def manager(request):
     orders = Order.objects.all()
     total_orders = Order.objects.count()
@@ -40,7 +42,8 @@ def manager(request):
 
 
 @login_required(login_url='/login/')
-@check
+@is_specialist
+# @check
 def specialist_view(request, pk):
     specialist = Specialist.objects.get(id=pk)
     pending = specialist.order_set.filter(status='pending').count()
@@ -57,7 +60,8 @@ def specialist_view(request, pk):
     return render(request, 'accounts/specialist_view.html', context)
 
 @login_required(login_url='/login/')
-@check
+@is_specialist
+# @check
 def create_specialist(request):
     if request.method == 'POST':
         form = SpecialistForm(request.POST)
@@ -71,7 +75,8 @@ def create_specialist(request):
 
 
 @login_required(login_url='/login/')
-@check
+@is_specialist
+# @check
 def create_order(request):
     if request.method == 'POST':
         form = CustomerForm(request.POST)
@@ -87,7 +92,8 @@ def create_order(request):
     return render(request, 'accounts/create_order.html', context)
 
 @login_required(login_url='/login/')
-@check
+@is_specialist
+# @check
 def edit_order(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
@@ -102,7 +108,8 @@ def edit_order(request, pk):
 
 
 @login_required(login_url='/login/')
-@check
+@is_specialist
+# @check
 def delete_order(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
@@ -113,7 +120,8 @@ def delete_order(request, pk):
 
 
 @login_required(login_url='/login/')
-@check
+@is_specialist
+# @check
 def customers(request):
     customers = Customer.objects.all()
     # order = customers.order.description.all()
@@ -121,8 +129,7 @@ def customers(request):
     return render(request, 'accounts/customers.html', context)
 
 
-@login_required(login_url='/login/')
-@check
+
 def register(request):
     form = RegisterForm()
     if request.method == 'POST':
@@ -135,7 +142,7 @@ def register(request):
 
 
 @login_required(login_url='/login/')
-@allowed_users('specialist')
+
 def user_page(request):
     try:
         orders = request.user.specialist.order_set.all()

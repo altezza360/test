@@ -41,5 +41,13 @@ def check(view_func):
 
     return wrapper_function
 
+
+def is_specialist(view_func):
+    def wrapper_function(request, *args, **kwargs):
+        if request.user.is_spec and request.user.is_admin == False:
+            return redirect('/user_page')
+        if request.user.is_admin:
+            return view_func(request, *args, **kwargs)
+    return wrapper_function
 # customers_url
 # specialist_view_url
